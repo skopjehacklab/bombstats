@@ -63,14 +63,7 @@ def креирај_транскрипт(име_на_датотека):
         return разговори
 
 
-if __name__ == "__main__":
-    import sys
-    if len(sys.argv) == 1:
-        print("ГРЕШКА: Фали бројот на бомбата.")
-        print("python bomba.py 10")
-        exit(-1)
-
-    бомба = sys.argv[1]
+def креирај_и_запиши_џејсон(бомба):
     print("Разговори од {}-та бомба:".format(бомба))
     разговори = креирај_транскрипт('транскрипти/{}.txt'.format(бомба))
 
@@ -80,3 +73,17 @@ if __name__ == "__main__":
     транскрипт = {'бомба': бомба, 'разговори': [dict(р) for р in разговори]}
     with open('транскрипти/{}.json'.format(бомба), 'w+') as jsonf:
         json.dump(транскрипт, jsonf)
+
+
+if __name__ == "__main__":
+    import glob
+    import os
+    import sys
+
+    if len(sys.argv) == 1:
+        for датотека in glob.glob('транскрипти/*.txt'):
+            бомба = os.path.basename(датотека).split('.')[0]
+            креирај_и_запиши_џејсон(бомба)
+    else:
+        бомба = sys.argv[1]
+        креирај_и_запиши_џејсон(бомба)
