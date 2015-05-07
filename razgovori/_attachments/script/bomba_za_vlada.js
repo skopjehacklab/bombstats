@@ -77,12 +77,8 @@ function ситеСоговорници($) {
 function паровиСоговорници($) {
     $Couch.view('parovi_sogovornici', {reduce: true, group: true}).done(
         function(data) {
-            var aggr = {};
-            data.rows.forEach(function(row) {
-                if (aggr[row.key] || aggr[row.key.reverse()])
-                    aggr[row.key].value += row.value;
-                else
-                    aggr[row.key] = row.value;
+            data.rows.sort(function(a, b) {
+                return parseInt(b.value) - parseInt(a.value);
             });
             var табела = $("<table>").attr('cellspacing', '0').attr('cellpadding', '0');
             var наслови = $("<thead>");
@@ -93,12 +89,12 @@ function паровиСоговорници($) {
             насловиРед.append($("<td>").text("Број на разговори"));
             var листа = $("<tbody>");
             листа.appendTo(табела);
-            for (key in aggr) {
+            data.rows.forEach(function(row) {
                 htmlRow = $("<tr>");
-                htmlRow.append($("<td>").text(key[0][0] + " " + key[0][1] + " и " + key[1][0] + " " + key[1][1]));
-                htmlRow.append($("<td>").text(aggr[key].value));
+                htmlRow.append($("<td>").text(row.key));
+                htmlRow.append($("<td>").text(row.value));
                 листа.append(htmlRow);
-            }
+            });
 
             var наслов = $("<h2>").addClass("title").text("Сите парови во објавените разговори");
             наслов.appendTo($("#container"));
