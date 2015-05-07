@@ -106,5 +106,19 @@ function паровиСоговорници($) {
 }
 
 jQuery(function($) {
-    паровиСоговорници($);
+    var link = $("<a>").text("сите бомби").click(function() {
+        $("#container").empty();
+        ситеБомби($);
+    });
+    link.appendTo($("#linkovi"));
+    var link = $("<a>").text("фреквенција на парови соговорници").click(function() {
+        $("#container").empty();
+        паровиСоговорници($);
+    });
+    link.appendTo($("#linkovi"));
+    var link = $("<a>").text("фреквенција по соговорник").click(function() {
+        $("#container").empty();
+        ситеСоговорници($);
+    });
+    link.appendTo($("#linkovi"));
 });
