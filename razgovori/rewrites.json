@@ -1,0 +1,50 @@
+[
+   {
+      "from" : "/",
+      "to" : "index.html"
+   },
+   {
+      "to" : "/script",
+      "from" : "/script"
+   },
+   {
+      "from" : "/script/*",
+      "to" : "/script/*"
+   },
+   {
+      "to" : "/style",
+      "from" : "/style"
+   },
+   {
+      "from" : "/style/*",
+      "to" : "/style/*"
+   },
+   {
+      "to" : "/images",
+      "from" : "/images"
+   },
+   {
+      "to" : "/images/*",
+      "from" : "/images/*"
+   },
+   {
+      "to" : "../../",
+      "from" : "/api"
+   },
+   {
+      "from" : "/api/*",
+      "to" : "../../*"
+   },
+   {
+      "from" : "/ddoc",
+      "to" : "./"
+   },
+   {
+      "from" : "/ddoc/*",
+      "to" : "./*"
+   },
+   {
+      "to" : "*",
+      "from" : "/*"
+   }
+]
