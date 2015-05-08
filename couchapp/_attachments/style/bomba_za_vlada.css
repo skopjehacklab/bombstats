@@ -1,0 +1,71 @@
+body {
+  margin: 0;
+  padding: 0;
+  font-family: sans-serif;
+  background: #efefef;
+}
+#container {
+  margin: 0 auto;
+  width: 550px;
+}
+body > header {
+  background: #2f2f2f;
+  text-align: center;
+  color: #afafaf;
+  padding: 1em 0;
+}
+#container div {
+  margin: 50px 0;
+}
+div p {
+  font-size: 0.9em;
+}
+h1 {
+  margin: 0;
+  color: #ffffff;
+  font-size: 3em;
+}
+div.bomba h2 {
+  background: #2f2f2f;
+  color: #ffffff;
+  width: 110%;
+  margin-left: -5%;
+  padding: 3% 5%;
+}
+table > * {
+  padding:0;
+  margin: 0;
+  border: 0;
+}
+table td {
+  padding: 10px 18px;
+  border-bottom: 1px solid #2f2f2f;
+}
+table thead td {
+  background: #2f2f2f;
+  color: #ffffff;
+  font-weight: bold;
+}
+.title {
+  text-align: center;
+  font-size: 1.8em;
+}
+#linkovi {
+  background: #BA2222;
+  padding: 5px 10px;
+  border-bottom: 2px solid #000000;
+  text-align: center;
+  font-weight: bold;
+}
+#linkovi a {
+  color: #fff;
+  border: 2px solid #000000;
+  padding: 5px 10px;
+  cursor: pointer;
+}
+footer {
+  background: #fff;
+  text-align: center;
+  border-top: 2px solid #000000;
+  margin-top: 30px;
+}
