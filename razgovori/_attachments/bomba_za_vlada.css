@@ -63,3 +63,9 @@ table thead td {
   padding: 5px 10px;
   cursor: pointer;
 }
+footer {
+  background: #fff;
+  text-align: center;
+  border-top: 2px solid #000000;
+  margin-top: 30px;
+}
