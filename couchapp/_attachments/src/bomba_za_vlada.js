@@ -25,12 +25,18 @@ var Razgovor = React.createClass({
     getInitialState: function() {
         return null;
     },
+    componentWillMount: function() {
+        if (this.props.data !== undefined) {
+            this.setState({ r: this.props.data, link: "#r/" + this.props.data["_id"] });
+        }
+    },
     componentDidMount: function() {
-        var self = this;
-        var razgovorId = this.context.router.getCurrentParams()['razgovorId'];
-        $Couch.get(razgovorId).done(function(data) {
-            self.setState({ r: data });
-        });
+        if (this.state === null) {
+            var razgovorId = this.context.router.getCurrentParams()['razgovorId'];
+            $Couch.get(razgovorId).done(function(data) {
+                this.setState({ r: data, link: "#r/" + razgovorId, bomba: data.бомба.реден_број });
+            }.bind(this));
+        }
     },
     render: function() {
         if (this.state === null) {
@@ -42,9 +48,11 @@ var Razgovor = React.createClass({
         return (
             <div className="razgovor">
               <h3>
-                Разговор помеѓу&nbsp;
-                <Sogovornik data={this.state.r.соговорници[0]} />и&nbsp;
-                <Sogovornik data={this.state.r.соговорници[1]} />
+                <a href={this.state.link}>
+                  Разговор помеѓу&nbsp;
+                  <Sogovornik data={this.state.r.соговорници[0]} />и&nbsp;
+                  <Sogovornik data={this.state.r.соговорници[1]} />
+                </a>
               </h3>
               {repliki}
             </div>
@@ -52,23 +60,31 @@ var Razgovor = React.createClass({
     }
 });
 
-var BombaZaVlada = React.createClass({
-    getInitialState : function () {
-        return {data: []};
+var Bomba = React.createClass({
+    displayName: 'Bomba',
+    contextTypes: {
+        router: React.PropTypes.func.isRequired
     },
-    componentDidMount : function () {
-        $Couch.view('all', {include_docs: true}).done(function(response) {
-            var razgovori = response.rows.slice(1,10).map(function(bomba) {
-                return <Razgovor doc={bomba.doc} />
-            });
-            this.setState({data: razgovori});
+    getInitialState: function() {
+        return null;
+    },
+    componentDidMount: function() {
+        var bombaId = this.context.router.getCurrentParams()['bombaId'];
+        $Couch.view("bombi", {key: bombaId, include_docs: true}).done(function(data) {
+            this.setState({ b: data.rows, id: bombaId });
         }.bind(this));
     },
     render: function() {
+        if (this.state === null) {
+            return <div>лодин бомба ...</div>
+        }
+        var bombi = this.state.b.map(function(razgovor) {
+            return <Razgovor key={razgovor.doc._id} data={razgovor.doc} />
+        });
         return (
             <div id="bomba_za_vlada">
-              <h2>Бомби</h2>
-              {this.state.data}
+              <h2>Бомбa {this.state.id}</h2>
+              {bombi}
             </div>
         );
     }
@@ -76,9 +92,25 @@ var BombaZaVlada = React.createClass({
 
 
 var Naslovna = React.createClass({
+    getInitialState: function() {
+        return null;
+    },
+    componentDidMount: function() {
+        $Couch.view('bombi', {reduce: true, group_level: 1}).done(function(response) {
+            this.setState({ b: response.rows });
+        }.bind(this));
+    },
     render: function() {
+        if (this.state === null) {
+            return <div>лодин ...</div>
+        }
+        var bombi = this.state.b.map(function(bomba) {
+            var brojRazgovori =  "(" + bomba.value + " разговори)";
+            var linkUrl = "#b/" + bomba.key;
+            return <a href={linkUrl}><b>{bomba.key}</b><span>{brojRazgovori}</span></a>
+        });
         return (
-            <div><h2>TES</h2></div>
+            <div className="bombi">{bombi}</div>
         );
     }
 });
@@ -96,6 +128,7 @@ var routes = (
     <Route name="app" path="/" handler={App}>
         <DefaultRoute handler={Naslovna} />
         <Route name="r/:razgovorId" handler={Razgovor} />
+        <Route name="b/:bombaId" handler={Bomba} />
         <NotFoundRoute handler={Naslovna} />
     </Route>
 );
